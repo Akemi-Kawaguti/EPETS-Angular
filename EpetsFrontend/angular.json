@@ -2,11 +2,12 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "35b79f58-6fe8-4666-8d52-0acd0f694d65"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "EpetsFrontend": {
+    "epets-angular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -64,10 +65,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "EpetsFrontend:build:production"
+              "buildTarget": "epets-angular:build:production"
             },
             "development": {
-              "buildTarget": "EpetsFrontend:build:development"
+              "buildTarget": "epets-angular:build:development"
             }
           },
           "defaultConfiguration": "development"

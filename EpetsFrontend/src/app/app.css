@@ -1,0 +1,207 @@
+/* ---------- topo ---------- */
+.topbar {
+  background: var(--terra);
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  padding: 8px 16px;
+}
+
+header.site {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.hrow {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 116px;
+}
+
+.logo img { height: 96px; width: auto; }
+
+.search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 16px;
+  background: var(--cream);
+}
+
+.search input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+}
+
+.hact { display: flex; gap: 28px; align-items: center; font-size: 13px; }
+.bagbtn { font-weight: 600; font-size: 14px; }
+
+nav.cats { border-top: 1px solid var(--border); }
+nav.cats .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+}
+nav.cats button {
+  font-size: 13px;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+}
+nav.cats button.on { font-weight: 600; border-color: var(--terra); }
+nav.cats button:hover { color: var(--terra); }
+
+/* ---------- utilidades usadas pelos blocos ---------- */
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.link {
+  color: var(--terra); font-weight: 600; font-size: 13px;
+  display: inline-flex; gap: 6px; align-items: center;
+}
+.link:hover { text-decoration: underline; }
+.btn.block { width: 100%; }
+.note { font-size: 11px; color: var(--muted); margin-top: 24px; }
+
+/* ---------- banner ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  background: var(--peach);
+  min-height: 510px;
+}
+.hero .txt {
+  padding: 64px 24px 64px max(24px, calc((100vw - var(--max)) / 2 + 24px));
+  display: flex; flex-direction: column; justify-content: center; gap: 22px;
+}
+.hero h1 { font-family: var(--serif); font-weight: 400; font-size: 62px; line-height: 1.05; }
+.hero p { color: var(--muted); max-width: 520px; }
+.hero .img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 510px;
+  object-fit: cover;
+  background: #e9d9cc;
+}
+.row { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* ---------- categorias ---------- */
+.catcard { text-align: left; display: flex; flex-direction: column; gap: 12px; }
+.catcard .ph {
+  aspect-ratio: 306/186; border-radius: 10px; overflow: hidden; background: var(--peach);
+}
+.catcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.catcard:hover .ph img { transform: scale(1.05); }
+.catcard h3 {
+  font-family: var(--serif); font-weight: 400; font-size: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.catcard h3 .ico { color: var(--terra); }
+.catcard p { font-size: 12px; color: var(--muted); }
+
+/* ---------- cards de produto ---------- */
+.pcard {
+  background: #fff; border: 1px solid var(--border); border-radius: 12px;
+  padding: 16px; display: flex; flex-direction: column; gap: 6px;
+  transition: box-shadow .2s, transform .2s;
+}
+.pcard:hover { box-shadow: 0 14px 30px rgba(53, 44, 40, .08); transform: translateY(-2px); }
+.pcard .ph {
+  height: 190px; border-radius: 8px; overflow: hidden; background: #fff;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+}
+.pcard .ph img { max-height: 100%; width: 100%; object-fit: contain; }
+.pcard .cat { font-size: 11px; color: var(--terra); font-weight: 500; }
+.pcard h3 { font-size: 16px; font-weight: 600; line-height: 1.3; min-height: 42px; }
+.pcard .det { font-size: 12px; color: var(--muted); }
+.pcard .price { font-size: 22px; font-weight: 600; margin: 4px 0 10px; }
+.pcard .btn { margin-top: auto; }
+
+/* ---------- marcas ---------- */
+.brands { background: #F8EEE7; padding: 36px 0; }
+.brands .wrap { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.brands h2 { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.15; margin-top: 6px; }
+.brands .brand img {
+  height: 48px; width: auto; max-width: 150px; object-fit: contain;
+  filter: grayscale(1); opacity: .65; transition: filter .2s, opacity .2s;
+}
+.brands .brand:hover img { filter: none; opacity: 1; }
+
+/* ---------- fases da vida ---------- */
+.phase {
+  background: var(--peach); border-radius: 10px; padding: 28px; text-align: left;
+  display: flex; flex-direction: column; gap: 10px;
+  border: 1.5px solid transparent; transition: border-color .2s;
+}
+.phase:hover { border-color: var(--terra); }
+.phase .top { display: flex; justify-content: space-between; }
+.phase .ico { color: var(--terra); }
+.phase h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; }
+.phase p { font-size: 12px; color: var(--muted); }
+
+/* ---------- nossa história ---------- */
+.story { background: var(--peach); }
+.story .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.story img {
+  border-radius: 14px; width: 100%; aspect-ratio: 560/350;
+  object-fit: cover; background: #e9d9cc;
+}
+.story h2 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.12; margin: 12px 0 16px; }
+.story p { color: var(--muted); margin-bottom: 22px; }
+
+/* ---------- dicas ---------- */
+.tip {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  padding: 28px; display: flex; flex-direction: column; gap: 12px; text-align: left;
+}
+.tip .ico { color: var(--terra); width: 26px; height: 26px; }
+.tip h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.2; }
+.tip p { font-size: 12px; color: var(--muted); }
+
+/* ---------- faixa terracota ---------- */
+.band { background: var(--terra); color: #fff; padding: 40px 0; }
+.band .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.band h2 { font-size: 28px; font-weight: 600; }
+.band p { font-size: 13px; opacity: .9; }
+
+/* ---------- rodapé ---------- */
+footer { background: #F8EEE7; padding: 48px 0 28px; }
+footer .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+footer h4 { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+footer li { list-style: none; font-size: 12px; color: var(--muted); margin: 4px 0; }
+footer li button:hover { color: var(--terra); }
+footer .bottom {
+  display: flex; justify-content: space-between; border-top: 1px solid var(--border);
+  margin-top: 36px; padding-top: 20px; font-size: 11px; color: var(--muted);
+}
+footer .flogo img { height: 84px; width: auto; }
+
+/* ---------- celular e tablet ---------- */
+@media (max-width: 1000px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero .img { min-height: 320px; }
+  .grid4 { grid-template-columns: repeat(2, 1fr); }
+  .grid3 { grid-template-columns: 1fr; }
+  .story .wrap { grid-template-columns: 1fr; }
+  nav.cats .wrap { overflow-x: auto; gap: 22px; }
+  .brands .wrap, .band .wrap { flex-direction: column; align-items: flex-start; }
+  footer .cols { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .hrow { flex-wrap: wrap; height: auto; padding: 12px 0; gap: 12px; }
+  .search { order: 3; flex-basis: 100%; }
+  .logo img { height: 64px; }
+  .hero h1 { font-size: 42px; }
+  .shead h2 { font-size: 30px; }
+  .grid4 { grid-template-columns: 1fr; }
+}
