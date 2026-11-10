@@ -1,0 +1,102 @@
+/* ---------- banner ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  background: var(--peach);
+  min-height: 510px;
+}
+.hero .txt {
+  padding: 64px 24px 64px max(24px, calc((100vw - var(--max)) / 2 + 24px));
+  display: flex; flex-direction: column; justify-content: center; gap: 22px;
+}
+.hero h1 { font-family: var(--serif); font-weight: 400; font-size: 62px; line-height: 1.05; }
+.hero p { color: var(--muted); max-width: 520px; }
+.hero .img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 510px;
+  object-fit: cover;
+  background: #e9d9cc;
+}
+.row { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* ---------- categorias ---------- */
+.catcard { text-align: left; display: flex; flex-direction: column; gap: 12px; }
+.catcard .ph {
+  aspect-ratio: 306/186; border-radius: 10px; overflow: hidden; background: var(--peach);
+}
+.catcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.catcard:hover .ph img { transform: scale(1.05); }
+.catcard h3 {
+  font-family: var(--serif); font-weight: 400; font-size: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.catcard h3 .ico { color: var(--terra); }
+.catcard p { font-size: 12px; color: var(--muted); }
+
+/* ---------- marcas ---------- */
+.brands { background: #F8EEE7; padding: 36px 0; }
+.brands .wrap { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.brands h2 { font-family: var(--serif); font-weight: 400; font-size: 24px; line-height: 1.15; margin-top: 6px; }
+.brands .brand img {
+  height: 48px; width: auto; max-width: 150px; object-fit: contain;
+  filter: grayscale(1); opacity: .65; transition: filter .2s, opacity .2s;
+}
+.brands .brand:hover img { filter: none; opacity: 1; }
+
+/* ---------- fases da vida ---------- */
+.phase {
+  background: var(--peach); border-radius: 10px; padding: 28px; text-align: left;
+  display: flex; flex-direction: column; gap: 10px;
+  border: 1.5px solid transparent; transition: border-color .2s;
+}
+.phase:hover { border-color: var(--terra); }
+.phase .top { display: flex; justify-content: space-between; }
+.phase .ico { color: var(--terra); }
+.phase h3 { font-family: var(--serif); font-weight: 400; font-size: 28px; }
+.phase p { font-size: 12px; color: var(--muted); }
+
+/* ---------- nossa história ---------- */
+.story { background: var(--peach); }
+.story .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.story img {
+  border-radius: 14px; width: 100%; aspect-ratio: 560/350;
+  object-fit: cover; background: #e9d9cc;
+}
+.story h2 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.12; margin: 12px 0 16px; }
+.story p { color: var(--muted); margin-bottom: 22px; }
+
+/* ---------- dicas ---------- */
+.tip {
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  padding: 28px; display: flex; flex-direction: column; gap: 12px; text-align: left;
+}
+.tip .ico { color: var(--terra); width: 26px; height: 26px; }
+.tip h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.2; }
+.tip p { font-size: 12px; color: var(--muted); }
+
+/* ---------- faixa terracota ---------- */
+.band { background: var(--terra); color: #fff; padding: 40px 0; }
+.band .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.band h2 { font-size: 28px; font-weight: 600; }
+.band p { font-size: 13px; opacity: .9; }
+
+.pt0 { padding-top: 0; }
+.shead { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; gap: 24px; }
+.shead h2 { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.15; margin-top: 10px; }
+.catcard { color: inherit; }
+.phase, .tip { color: inherit; }
+.tip { text-decoration: none; }
+.band .btn.ghost { border-color: #fff; }
+
+@media (max-width: 1000px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero .img { min-height: 320px; }
+  .story .wrap { grid-template-columns: 1fr; }
+  .brands .wrap, .band .wrap { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 640px) {
+  .hero h1 { font-size: 42px; }
+  .shead h2 { font-size: 30px; }
+}

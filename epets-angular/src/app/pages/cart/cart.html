@@ -1,0 +1,59 @@
+<div class="wrap page">
+  <nav class="crumbs" aria-label="Você está aqui"><a routerLink="/">Início</a> / <span>Sacola</span></nav>
+  <h1>Sua sacola</h1>
+
+  @if (cart.items().length === 0) {
+    <div class="empty card">
+      <svg class="ico big" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+      <h2>Sua sacola está vazia.</h2>
+      <p class="muted">Que tal escolher algo gostoso para o seu pet?</p>
+      <a class="btn" routerLink="/catalogo">Ver produtos</a>
+    </div>
+  } @else {
+    <p class="lead">{{ cart.count() }} {{ cart.count() === 1 ? 'item' : 'itens' }} na sua sacola.</p>
+
+    <div class="layout">
+      <ul class="lines">
+        @for (i of cart.items(); track i.product.id) {
+          <li class="line card">
+            <a class="thumb" [routerLink]="['/produto', i.product.id]"><app-product-img [product]="i.product" /></a>
+            <div class="desc">
+              <span class="eyebrow">{{ i.product.pet }} · {{ i.product.category === 'Rações' ? i.product.fase : i.product.category }}</span>
+              <a class="name" [routerLink]="['/produto', i.product.id]">{{ i.product.name }}</a>
+              <span class="muted small">{{ i.product.detail }}</span>
+              <span class="muted small">{{ i.product.price | currency: 'BRL' }} cada</span>
+            </div>
+            <div class="qty" role="group" [attr.aria-label]="'Quantidade de ' + i.product.name">
+              <button type="button" (click)="cart.setQty(i.product.id, i.qty - 1)" aria-label="Diminuir">−</button>
+              <span>{{ i.qty }}</span>
+              <button type="button" (click)="cart.setQty(i.product.id, i.qty + 1)" [disabled]="i.qty >= i.product.stock" aria-label="Aumentar">+</button>
+            </div>
+            <div class="total">
+              <strong>{{ i.total | currency: 'BRL' }}</strong>
+              <button type="button" class="link" (click)="cart.remove(i.product.id)">Remover</button>
+            </div>
+          </li>
+        }
+      </ul>
+
+      <aside class="summary card">
+        <h2>Resumo</h2>
+        <div class="row"><span>Subtotal</span><span>{{ cart.subtotal() | currency: 'BRL' }}</span></div>
+        <div class="row">
+          <span>Entrega</span>
+          <span>{{ cart.freteEntrega() === 0 ? 'Grátis' : (cart.freteEntrega() | currency: 'BRL') }}</span>
+        </div>
+        <p class="hint">
+          @if (cart.faltaFreteGratis() > 0) {
+            Faltam {{ cart.faltaFreteGratis() | currency: 'BRL' }} para a entrega grátis (a partir de {{ freteGratis | currency: 'BRL' }}). Retirada na loja é sempre grátis.
+          } @else {
+            Você ganhou entrega grátis! 🎉
+          }
+        </p>
+        <div class="row grand"><span>Total</span><span>{{ cart.subtotal() + cart.freteEntrega() | currency: 'BRL' }}</span></div>
+        <a class="btn block" routerLink="/checkout">Finalizar compra</a>
+        <a class="link more" routerLink="/catalogo">← Continuar comprando</a>
+      </aside>
+    </div>
+  }
+</div>

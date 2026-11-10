@@ -1,0 +1,18 @@
+.count { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.prod { display: flex; align-items: center; gap: 14px; min-width: 260px; }
+.prod strong { display: block; font-size: 14px; }
+.prod small { color: var(--muted); font-size: 12px; }
+.thumb { width: 48px; height: 48px; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; flex: none; }
+
+.overlay { position: fixed; inset: 0; background: rgba(35, 28, 25, .55); display: grid; place-items: center; padding: 20px; z-index: 100; overflow-y: auto; }
+.modal { background: #fff; border-radius: 16px; padding: 28px; width: min(680px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+.modal.small { width: min(440px, 100%); }
+.modal h2 { font-family: var(--serif); font-weight: 400; font-size: 28px; }
+.modal p { color: var(--muted); }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 16px; }
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.check { display: flex; gap: 10px; align-items: center; font-size: 14px; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--terra); }
+.foot { display: flex; justify-content: flex-end; gap: 12px; margin-top: 4px; }
+@media (max-width: 640px) { .g2, .g3, .g4 { grid-template-columns: 1fr 1fr; } }

@@ -1,0 +1,69 @@
+<div class="wrap page">
+  <nav class="crumbs" aria-label="Você está aqui">
+    <a routerLink="/">Início</a> / <span>Todos os produtos</span>
+  </nav>
+
+  <span class="eyebrow top">Escolhas que fazem bem</span>
+  <h1>{{ title() }}</h1>
+  <p class="lead">Rações para a espécie e a fase certas. Acessórios para uma rotina mais feliz.</p>
+
+  <div class="bar">
+    <p class="count">
+      <strong>{{ result().length }} {{ result().length === 1 ? 'produto' : 'produtos' }}</strong>
+      nesta seleção
+      @if (q()) { • busca por “{{ q() }}” }
+      • Preços e estoque ilustrativos
+    </p>
+    <label class="sort">
+      Ordenar:
+      <select [value]="sort()" (change)="setSort($any($event.target).value)">
+        <option value="relevancia">Relevância</option>
+        <option value="menor">Menor preço</option>
+        <option value="maior">Maior preço</option>
+        <option value="nome">Nome (A–Z)</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="layout">
+    <aside class="filters" aria-label="Filtros">
+      <div class="fhead">
+        <h2>Filtrar por</h2>
+        @if (hasFilters()) {
+          <button type="button" class="link" (click)="clear()">Limpar</button>
+        } @else {
+          <span class="link off">Limpar</span>
+        }
+      </div>
+
+      @for (g of options(); track g.key) {
+        <fieldset>
+          <legend class="eyebrow">{{ g.titulo }}</legend>
+          @for (v of g.values; track v[0]) {
+            <label class="check">
+              <input type="checkbox" [checked]="isChecked(g.key, v[0])" (change)="toggle(g.key, v[0])" />
+              <span class="name">{{ v[0] }}</span>
+              <span class="n">{{ v[1] }}</span>
+            </label>
+          }
+        </fieldset>
+      }
+    </aside>
+
+    <div class="results">
+      @if (result().length) {
+        <div class="grid">
+          @for (p of result(); track p.id) {
+            <app-product-card [product]="p" />
+          }
+        </div>
+      } @else {
+        <div class="empty card">
+          <h2>Não encontramos nada por aqui.</h2>
+          <p class="muted">Tente tirar algum filtro ou buscar por outro nome.</p>
+          <button type="button" class="btn sm" (click)="clear()">Limpar filtros</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

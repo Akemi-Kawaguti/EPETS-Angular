@@ -1,0 +1,147 @@
+<div class="toolbar">
+  <input class="input grow" type="search" placeholder="Buscar por nome, marca ou código…" aria-label="Buscar produto"
+         [value]="busca()" (input)="busca.set($any($event.target).value)" />
+  <select class="input" aria-label="Categoria" [value]="filtroCat()" (change)="filtroCat.set($any($event.target).value)">
+    <option value="">Todas as categorias</option>
+    @for (c of categorias(); track c) { <option [value]="c">{{ c }}</option> }
+  </select>
+  <select class="input" aria-label="Situação do estoque" [value]="filtroStatus()" (change)="filtroStatus.set($any($event.target).value)">
+    <option value="todos">Todas as situações</option>
+    <option value="ok">Em estoque</option>
+    <option value="baixo">Estoque baixo</option>
+    <option value="esgotado">Esgotados</option>
+  </select>
+  <button type="button" class="btn" (click)="novo()">
+    <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg> Novo produto
+  </button>
+</div>
+
+<p class="count">{{ lista().length }} de {{ products.items().length }} produtos</p>
+
+<div class="tbl-wrap">
+  <table class="tbl">
+    <thead>
+      <tr><th>Produto</th><th>Pet</th><th>Categoria</th><th class="num">Preço</th><th class="num">Custo</th><th class="num">Estoque</th><th></th></tr>
+    </thead>
+    <tbody>
+      @for (p of lista(); track p.id) {
+        <tr>
+          <td>
+            <div class="prod">
+              <span class="thumb"><app-product-img [product]="p" /></span>
+              <div><strong>{{ p.name }}</strong><small>{{ p.brand }} · {{ p.detail }}</small></div>
+            </div>
+          </td>
+          <td>{{ p.pet }}</td>
+          <td>{{ p.category }}</td>
+          <td class="num">{{ p.price | currency: 'BRL' }}</td>
+          <td class="num">{{ p.cost | currency: 'BRL' }}</td>
+          <td class="num">
+            <span class="badge" [class.ok]="status(p) === 'ok'" [class.warn]="status(p) === 'baixo'" [class.bad]="status(p) === 'esgotado'">{{ p.stock }} un.</span>
+          </td>
+          <td>
+            <div class="actions">
+              <button type="button" class="btn ghost sm" (click)="editar(p)">Editar</button>
+              <button type="button" class="btn danger sm" (click)="confirmarExclusao.set(p)">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="empty-row">Nenhum produto encontrado com esses filtros.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (aberto()) {
+  <div class="overlay" (click)="fechar()">
+    <form class="modal" role="dialog" aria-modal="true" [attr.aria-label]="editando() ? 'Editar produto' : 'Novo produto'"
+          [formGroup]="form" (ngSubmit)="salvar()" (click)="$event.stopPropagation()" novalidate>
+      <h2>{{ editando() ? 'Editar produto' : 'Novo produto' }}</h2>
+
+      <label class="field" [class.invalid]="invalido('name')">
+        Nome do produto
+        <input formControlName="name" />
+        @if (invalido('name')) { <span class="err">Informe o nome (mín. 3 letras).</span> }
+      </label>
+
+      <div class="g2">
+        <label class="field" [class.invalid]="invalido('brand')">
+          Marca
+          <input formControlName="brand" />
+          @if (invalido('brand')) { <span class="err">Obrigatório.</span> }
+        </label>
+        <label class="field" [class.invalid]="invalido('detail')">
+          Detalhe / peso
+          <input formControlName="detail" placeholder="Frango e arroz • 15 kg" />
+          @if (invalido('detail')) { <span class="err">Obrigatório.</span> }
+        </label>
+      </div>
+
+      <div class="g3">
+        <label class="field">
+          Pet
+          <select formControlName="pet">@for (p of pets; track p) { <option [value]="p">{{ p }}</option> }</select>
+        </label>
+        <label class="field" [class.invalid]="invalido('category')">
+          Categoria
+          <input formControlName="category" list="cats" placeholder="Rações, Higiene…" />
+          <datalist id="cats">@for (c of categorias(); track c) { <option [value]="c"></option> }</datalist>
+          @if (invalido('category')) { <span class="err">Obrigatório.</span> }
+        </label>
+        <label class="field">
+          Fase da vida
+          <select formControlName="fase">@for (f of fases; track f) { <option [value]="f">{{ f }}</option> }</select>
+        </label>
+      </div>
+
+      <div class="g4">
+        <label class="field" [class.invalid]="invalido('price')">
+          Preço (R$)
+          <input type="number" step="0.01" min="0" formControlName="price" />
+          @if (invalido('price')) { <span class="err">Maior que zero.</span> }
+        </label>
+        <label class="field" [class.invalid]="invalido('cost')">
+          Custo (R$)
+          <input type="number" step="0.01" min="0" formControlName="cost" />
+        </label>
+        <label class="field" [class.invalid]="invalido('stock')">
+          Estoque
+          <input type="number" min="0" step="1" formControlName="stock" />
+        </label>
+        <label class="field" [class.invalid]="invalido('minStock')">
+          Mínimo
+          <input type="number" min="0" step="1" formControlName="minStock" />
+        </label>
+      </div>
+
+      <label class="field">
+        Imagem <span class="hint">caminho dentro de /public (ex.: img/p-golden-adultos.jpg). Se vazio, usa a foto da espécie.</span>
+        <input formControlName="image" placeholder="img/p-nome-do-produto.jpg" />
+      </label>
+      <label class="field">
+        Descrição
+        <textarea formControlName="description" rows="3"></textarea>
+      </label>
+      <label class="check"><input type="checkbox" formControlName="featured" /> Mostrar nos favoritos da página inicial</label>
+
+      <div class="foot">
+        <button type="button" class="btn ghost" (click)="fechar()">Cancelar</button>
+        <button type="submit" class="btn">{{ editando() ? 'Salvar alterações' : 'Cadastrar produto' }}</button>
+      </div>
+    </form>
+  </div>
+}
+
+@if (confirmarExclusao(); as p) {
+  <div class="overlay" (click)="confirmarExclusao.set(null)">
+    <div class="modal small" role="alertdialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h2>Excluir produto?</h2>
+      <p>“{{ p.name }}” será removido do catálogo da loja. Essa ação não pode ser desfeita.</p>
+      <div class="foot">
+        <button type="button" class="btn ghost" (click)="confirmarExclusao.set(null)">Cancelar</button>
+        <button type="button" class="btn" (click)="excluir()">Sim, excluir</button>
+      </div>
+    </div>
+  </div>
+}

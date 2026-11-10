@@ -1,0 +1,85 @@
+<div class="wrap page">
+  @if (product(); as p) {
+    <nav class="crumbs" aria-label="Você está aqui">
+      <a routerLink="/">Início</a> /
+      <a routerLink="/catalogo">Todos os produtos</a> /
+      <a routerLink="/catalogo" [queryParams]="{ pet: p.pet }">{{ p.pet }}</a> /
+      <span>{{ p.name }}</span>
+    </nav>
+
+    <div class="grid">
+      <div class="photo card"><app-product-img [product]="p" /></div>
+
+      <div class="info">
+        <span class="eyebrow">{{ p.pet }} · {{ p.category === 'Rações' ? p.fase : p.category }}</span>
+        <h1>{{ p.name }}</h1>
+        <p class="lead">{{ p.detail }}</p>
+
+        <div class="price">{{ p.price | currency: 'BRL' }}</div>
+        <p class="parcela muted">ou 3x de {{ p.price / 3 | currency: 'BRL' }} sem juros (ilustrativo)</p>
+
+        <div class="status">
+          @if (soldOut()) {
+            <span class="badge bad">Indisponível no momento</span>
+          } @else if (low()) {
+            <span class="badge warn">Últimas {{ p.stock }} unidades</span>
+          } @else {
+            <span class="badge ok">Em estoque</span>
+          }
+          <span class="muted">Marca: <a class="link" routerLink="/catalogo" [queryParams]="{ marca: p.brand }">{{ p.brand }}</a></span>
+        </div>
+
+        @if (!soldOut()) {
+          <div class="buy">
+            <div class="qty" role="group" aria-label="Quantidade">
+              <button type="button" (click)="changeQty(-1)" [disabled]="qty() <= 1" aria-label="Diminuir">−</button>
+              <span aria-live="polite">{{ qty() }}</span>
+              <button type="button" (click)="changeQty(1)" [disabled]="qty() >= available()" aria-label="Aumentar">+</button>
+            </div>
+            <button type="button" class="btn" (click)="add()" [disabled]="available() === 0">Adicionar à sacola</button>
+            <button type="button" class="btn ghost" (click)="buyNow()" [disabled]="available() === 0">Comprar agora</button>
+          </div>
+          @if (available() === 0) {
+            <p class="msg">Você já colocou todas as unidades disponíveis na sacola.</p>
+          }
+        }
+        @if (added()) {
+          <p class="msg ok" role="status">
+            Adicionado! <a class="link" routerLink="/sacola">Ver sacola ({{ cart.count() }})</a>
+          </p>
+        }
+
+        <div class="desc card">
+          <h2>Sobre o produto</h2>
+          <p>{{ p.description }}</p>
+          <dl>
+            <dt>Espécie</dt><dd>{{ p.pet }}</dd>
+            <dt>Fase da vida</dt><dd>{{ p.fase }}</dd>
+            <dt>Categoria</dt><dd>{{ p.category }}</dd>
+            <dt>Conteúdo</dt><dd>{{ p.detail }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    @if (related().length) {
+      <div class="shead">
+        <div>
+          <span class="eyebrow">Combina com ele</span>
+          <h2>Quem escolheu este também olhou</h2>
+        </div>
+      </div>
+      <div class="grid4">
+        @for (r of related(); track r.id) {
+          <app-product-card [product]="r" />
+        }
+      </div>
+    }
+  } @else {
+    <div class="notfound card">
+      <h1>Produto não encontrado</h1>
+      <p class="lead">Ele pode ter saído do catálogo. Que tal dar uma olhada nos outros?</p>
+      <a class="btn" routerLink="/catalogo">Ver todos os produtos</a>
+    </div>
+  }
+</div>

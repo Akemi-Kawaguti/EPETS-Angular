@@ -1,0 +1,57 @@
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <span class="logo">E’</span>
+      <div>
+        <strong>E’PETS Admin</strong>
+        <small>Gestão da loja</small>
+      </div>
+    </div>
+
+    <p class="nav-title">Navegação</p>
+    <nav aria-label="Admin">
+      <a routerLink="/admin" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
+        Visão geral
+      </a>
+      <a routerLink="/admin/produtos" routerLinkActive="on">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8z" /><path d="m3 8 9 5 9-5M12 13v8" /></svg>
+        Produtos
+      </a>
+      <a routerLink="/admin/movimentacoes" routerLinkActive="on">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 8h14M14 4l4 4-4 4M20 16H6M10 12l-4 4 4 4" /></svg>
+        Movimentações
+      </a>
+    </nav>
+
+    <div class="bottom">
+      <a class="store" routerLink="/">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M4 9 5.5 4h13L20 9M4 9v11h16V9M4 9h16M9 20v-6h6v6" /></svg>
+        Ver loja
+      </a>
+      <div class="user">
+        <span class="avatar">EP</span>
+        <div><strong>Equipe E’PETS</strong><small>Administrador</small></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <div>
+        <h1>{{ titulo() }}</h1>
+        <p>{{ hoje | date: "EEEE, dd 'de' MMMM" }}</p>
+      </div>
+      <div class="icons">
+        <a class="iconbtn" routerLink="/admin/movimentacoes" aria-label="Movimentações" title="Movimentações">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7M12 17h.01" /></svg>
+        </a>
+        <a class="iconbtn" routerLink="/admin" aria-label="Alertas de estoque" title="Alertas de estoque">
+          <svg class="ico" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8zM10 20a2 2 0 0 0 4 0" /></svg>
+          <span class="dot"></span>
+        </a>
+      </div>
+    </header>
+    <div class="content"><router-outlet /></div>
+  </div>
+</div>

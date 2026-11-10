@@ -1,0 +1,57 @@
+<div class="wrap page">
+  @if (order(); as o) {
+    <div class="hero card">
+      <div class="check" aria-hidden="true">
+        <svg class="ico" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+      </div>
+      <span class="eyebrow">Pedido confirmado</span>
+      <h1>Obrigada pela compra, {{ o.customer.nome.split(' ')[0] }}!</h1>
+      <p class="lead">
+        Pedido <strong>#{{ o.id }}</strong> • {{ o.date | date: "dd/MM/yyyy 'às' HH:mm" }}.
+        Enviamos os detalhes para <strong>{{ o.customer.email }}</strong>.
+      </p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Itens</h2>
+        <ul class="items">
+          @for (i of o.items; track i.productId) {
+            <li>
+              <span><strong>{{ i.qty }}×</strong> {{ i.name }}<small>{{ i.detail }}</small></span>
+              <span>{{ i.price * i.qty | currency: 'BRL' }}</span>
+            </li>
+          }
+        </ul>
+        <div class="row"><span>Subtotal</span><span>{{ o.subtotal | currency: 'BRL' }}</span></div>
+        <div class="row"><span>{{ o.entrega === 'entrega' ? 'Entrega' : 'Retirada' }}</span><span>{{ o.frete === 0 ? 'Grátis' : (o.frete | currency: 'BRL') }}</span></div>
+        <div class="row grand"><span>Total</span><span>{{ o.total | currency: 'BRL' }}</span></div>
+      </div>
+
+      <div class="card">
+        <h2>{{ o.entrega === 'entrega' ? 'Entrega' : 'Retirada na loja' }}</h2>
+        @if (o.entrega === 'entrega' && o.endereco; as e) {
+          <p>{{ e.rua }}, {{ e.numero }}<br />{{ e.bairro }} — {{ e.cidade }}<br />CEP {{ e.cep }}</p>
+          <p class="muted">Previsão: de 1 a 2 dias úteis.</p>
+        } @else {
+          <p>Seu pedido fica separado para retirada em até 2 horas.</p>
+        }
+        <h2 class="sp">Pagamento</h2>
+        <p>{{ pagamento() }}</p>
+        <h2 class="sp">Contato</h2>
+        <p>{{ o.customer.nome }}<br />{{ o.customer.telefone }}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn" routerLink="/catalogo">Continuar comprando</a>
+      <a class="btn ghost" routerLink="/">Voltar ao início</a>
+    </div>
+  } @else {
+    <div class="hero card">
+      <h1>Pedido não encontrado</h1>
+      <p class="lead">Não achamos esse número de pedido neste navegador.</p>
+      <a class="btn" routerLink="/catalogo">Ver produtos</a>
+    </div>
+  }
+</div>

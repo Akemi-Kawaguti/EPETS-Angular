@@ -1,0 +1,98 @@
+<div class="head">
+  <div>
+    <h2>{{ saudacao }}, equipe.</h2>
+    <p>Acompanhe o estoque e mantenha a loja pronta para cada pedido.</p>
+  </div>
+  <div class="btns">
+    <button type="button" class="btn ghost" (click)="exportar()">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg>
+      Exportar
+    </button>
+    <a class="btn" routerLink="/admin/produtos" [queryParams]="{ novo: 1 }">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+      Novo produto
+    </a>
+  </div>
+</div>
+
+<div class="kpis">
+  <div class="kpi">
+    <div><span>Total em estoque</span><strong>{{ products.totalUnits() | number: '1.0-0' }}</strong><small>unidades disponíveis</small></div>
+    <span class="ic red"><svg class="ico" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8z" /><path d="m3 8 9 5 9-5M12 13v8" /></svg></span>
+  </div>
+  <div class="kpi">
+    <div><span>Estoque baixo</span><strong>{{ products.lowStock().length }}</strong><small>itens pedem reposição</small></div>
+    <span class="ic amber"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01" /></svg></span>
+  </div>
+  <div class="kpi">
+    <div><span>Valor em estoque</span><strong>{{ products.stockValue() | currency: 'BRL' }}</strong><small>baseado no custo</small></div>
+    <span class="ic green"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="2.5" /></svg></span>
+  </div>
+  <div class="kpi">
+    <div><span>Produtos esgotados</span><strong>{{ products.outOfStock().length }}</strong><small>itens indisponíveis</small></div>
+    <span class="ic red"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="m5.6 5.6 12.8 12.8" /></svg></span>
+  </div>
+</div>
+
+<div class="two">
+  <section class="panel">
+    <div class="phead">
+      <div><h3>Estoque por categoria</h3><p>Quantidade de unidades disponíveis</p></div>
+      <a class="btn ghost sm" routerLink="/admin/produtos">Ver produtos</a>
+    </div>
+    <div class="chart" role="img" aria-label="Gráfico de barras do estoque por categoria">
+      @for (c of chart(); track c.label) {
+        <div class="col">
+          <span class="val">{{ c.value }}</span>
+          <div class="bar" [style.height.%]="c.pct"></div>
+          <span class="lbl" [title]="c.label">{{ c.label }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="phead">
+      <div><h3>Precisam de atenção</h3><p>Itens abaixo do estoque mínimo</p></div>
+      <span class="badge warn">{{ products.needAttention().length }} itens</span>
+    </div>
+    <ul class="attn">
+      @for (p of products.needAttention(); track p.id) {
+        <li>
+          <a [routerLink]="['/admin/movimentacoes']" [queryParams]="{ produto: p.id }" [title]="'Registrar entrada de ' + p.name">
+            <span class="thumb"><app-product-img [product]="p" /></span>
+            <span class="txt"><strong>{{ p.name }}</strong><small>Mínimo: {{ p.minStock }} unidades</small></span>
+            <span class="badge" [class.bad]="p.stock === 0" [class.warn]="p.stock > 0">{{ p.stock }} un.</span>
+          </a>
+        </li>
+      } @empty {
+        <li class="ok">Tudo certo por aqui: nenhum item abaixo do mínimo. 🎉</li>
+      }
+    </ul>
+  </section>
+</div>
+
+<section class="panel recent">
+  <div class="phead">
+    <div><h3>Últimas movimentações</h3><p>Entradas, saídas e ajustes mais recentes</p></div>
+    <a class="btn ghost sm" routerLink="/admin/movimentacoes">Ver todas</a>
+  </div>
+  <div class="tbl-wrap flat">
+    <table class="tbl">
+      <thead><tr><th>Data</th><th>Produto</th><th>Tipo</th><th class="num">Qtd.</th><th>Motivo</th></tr></thead>
+      <tbody>
+        @for (m of recent(); track m.id) {
+          <tr>
+            <td>{{ m.date | date: 'dd/MM HH:mm' }}</td>
+            <td>{{ m.productName }}</td>
+            <td><span class="badge" [class.ok]="m.type === 'Entrada'" [class.bad]="m.type === 'Saída'" [class.warn]="m.type === 'Ajuste'">{{ m.type }}</span></td>
+            <td class="num">{{ m.quantity }}</td>
+            <td>{{ m.reason }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="empty-row">Nenhuma movimentação ainda.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

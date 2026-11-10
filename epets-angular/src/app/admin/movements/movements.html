@@ -1,0 +1,73 @@
+<div class="layout">
+  <form class="panel" [formGroup]="form" (ngSubmit)="registrar()" novalidate>
+    <h3>Registrar movimentação</h3>
+    <p class="sub">Entradas somam, saídas subtraem e ajustes definem o estoque para a quantidade informada.</p>
+
+    <label class="field" [class.invalid]="tentou() && form.controls.productId.invalid">
+      Produto
+      <select formControlName="productId">
+        <option value="" disabled>Selecione…</option>
+        @for (p of sorted(); track p.id) { <option [value]="p.id">{{ p.name }} ({{ p.stock }} un.)</option> }
+      </select>
+      @if (tentou() && form.controls.productId.invalid) { <span class="err">Escolha um produto.</span> }
+    </label>
+
+    <div class="field">
+      Tipo
+      <div class="seg" role="radiogroup">
+        @for (t of tipos; track t) {
+          <label [class.on]="form.controls.type.value === t">
+            <input type="radio" formControlName="type" [value]="t" /> {{ t }}
+          </label>
+        }
+      </div>
+    </div>
+
+    <label class="field" [class.invalid]="tentou() && form.controls.quantity.invalid">
+      {{ form.controls.type.value === 'Ajuste' ? 'Novo estoque (un.)' : 'Quantidade (un.)' }}
+      <input type="number" min="0" step="1" formControlName="quantity" />
+    </label>
+
+    <label class="field">
+      Motivo <span class="hint">opcional</span>
+      <input formControlName="reason" placeholder="Ex.: reposição do fornecedor, avaria, inventário…" />
+    </label>
+
+    @if (produto(); as p) {
+      <p class="preview" [class.neg]="(depois() ?? 0) < 0">
+        Estoque atual: <strong>{{ p.stock }}</strong> → depois: <strong>{{ depois() }}</strong> un.
+      </p>
+    }
+    @if (msg(); as m) { <p class="msg" [class.ok]="m.ok" role="status">{{ m.text }}</p> }
+
+    <button type="submit" class="btn block">Registrar</button>
+  </form>
+
+  <div class="hist">
+    <div class="toolbar">
+      <input class="input grow" type="search" placeholder="Buscar por produto ou motivo…" aria-label="Buscar" [value]="busca()" (input)="busca.set($any($event.target).value)" />
+      <select class="input" aria-label="Tipo" [value]="filtroTipo()" (change)="filtroTipo.set($any($event.target).value)">
+        <option value="">Todos os tipos</option>
+        @for (t of tipos; track t) { <option [value]="t">{{ t }}</option> }
+      </select>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Data</th><th>Produto</th><th>Tipo</th><th class="num">Qtd.</th><th>Motivo</th></tr></thead>
+        <tbody>
+          @for (m of historico(); track m.id) {
+            <tr>
+              <td class="nowrap">{{ m.date | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ m.productName }}</td>
+              <td><span class="badge" [class.ok]="m.type === 'Entrada'" [class.bad]="m.type === 'Saída'" [class.warn]="m.type === 'Ajuste'">{{ m.type }}</span></td>
+              <td class="num">{{ m.type === 'Entrada' ? '+' : m.type === 'Saída' ? '−' : '=' }}{{ m.quantity }}</td>
+              <td>{{ m.reason }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5" class="empty-row">Nenhuma movimentação encontrada.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
