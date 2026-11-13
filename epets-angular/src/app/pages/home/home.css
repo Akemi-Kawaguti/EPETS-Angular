@@ -76,6 +76,56 @@
 .tip h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.2; }
 .tip p { font-size: 12px; color: var(--muted); }
 
+/* ---------- janela "Nossa história" ---------- */
+.hist-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(53, 44, 40, .45);
+  animation: hist-fade .2s;
+}
+.hist-modal {
+  position: relative;
+  width: min(460px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .2);
+  animation: hist-up .25s;
+}
+.hist-modal h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.2;
+  margin: 0 40px 10px 0;
+}
+.hist-modal p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+.hist-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hist-x:hover { background: var(--terra-l); }
+
+@keyframes hist-fade { from { opacity: 0; } }
+@keyframes hist-up { from { transform: translateY(16px); opacity: 0; } }
+
 /* ---------- faixa terracota ---------- */
 .band { background: var(--terra); color: #fff; padding: 40px 0; }
 .band .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; }

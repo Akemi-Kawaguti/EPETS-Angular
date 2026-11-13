@@ -1,7 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
+import { WHATSAPP_URL } from '../../config/contato';
+import { AuthService } from '../../services/auth';
 import { CartService } from '../../services/cart';
 
 export const ACESSORIOS = ['Caminhas', 'Coleiras', 'Brinquedos', 'Comedouros e bebedouros', 'Higiene'];
@@ -19,10 +21,19 @@ interface NavItem {
   imports: [RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
+  host: {
+    '(document:click)': 'aoClicar($event)',
+    '(document:keydown.escape)': 'menuAberto.set(false)',
+  },
 })
 export class Header {
   private readonly router = inject(Router);
   protected readonly cart = inject(CartService);
+  protected readonly auth = inject(AuthService);
+  protected readonly whatsapp = WHATSAPP_URL;
+
+  /** menu do bonequinho (só abre quando a pessoa está logada) */
+  protected readonly menuAberto = signal(false);
 
   protected readonly nav: NavItem[] = [
     { key: 'todos', label: 'Todos os produtos', path: '/catalogo' },
@@ -57,5 +68,16 @@ export class Header {
   protected buscar(termo: string): void {
     const q = termo.trim();
     this.router.navigate(['/catalogo'], { queryParams: q ? { q } : {} });
+  }
+
+  /** clicou fora do bonequinho: fecha o menu */
+  protected aoClicar(e: Event): void {
+    if (!(e.target as HTMLElement).closest('.perfil')) this.menuAberto.set(false);
+  }
+
+  protected sair(): void {
+    this.menuAberto.set(false);
+    this.auth.sair();
+    this.router.navigateByUrl('/');
   }
 }

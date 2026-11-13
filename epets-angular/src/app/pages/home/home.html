@@ -145,18 +145,19 @@
 <!-- HISTÓRIA -->
 <section class="section story" id="historia">
   <div class="wrap">
-    <img src="cachorro.jpg" alt="Atendimento carinhoso na loja" />
+    <img src="fofis-historia.jpg" alt="Atendimento carinhoso na loja" />
     <div>
       <span class="eyebrow">Gente que ama bicho, como você.</span>
       <h2>Seu pet shop de bairro. Seu parceiro de todo dia.</h2>
       <p>A gente acredita no cuidado que conhece pelo nome. Por isso, cada ração e cada acessório têm espaço aqui por um bom motivo: fazer bem ao seu melhor amigo.</p>
-      <a class="btn ghost" routerLink="/catalogo">
-        Conheça os nossos produtos
+      <button type="button" class="btn ghost" (click)="abrirHistoria()">
+        Conheça a nossa história
         <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-      </a>
+      </button>
     </div>
   </div>
 </section>
+
 
 <!-- DICAS -->
 <section class="section" id="dicas">
@@ -200,9 +201,28 @@
       <h2>Na dúvida, a gente escolhe junto.</h2>
       <p>Conte sobre o seu pet. Nosso atendimento é feito de gente para gente.</p>
     </div>
-    <a class="btn ghost" href="mailto:contato@epets.com.br">
+    <a class="btn ghost" [href]="whatsapp" target="_blank" rel="noopener">
       Falar com a E’PETS
       <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
     </a>
   </div>
 </div>
+
+@if (historiaAberta()) {
+  <div class="hist-overlay" (click)="fecharHistoria()">
+    <div class="hist-modal" role="dialog" aria-modal="true" aria-labelledby="hist-titulo" (click)="$event.stopPropagation()">
+      <button type="button" class="hist-x" aria-label="Fechar" (click)="fecharHistoria()">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+
+      <h2 id="hist-titulo">Nossa história</h2>
+      <p>
+        A E’PETS nasceu no balcão de um pet shop de bairro, de gente que conhece cada cliente — e
+        cada pet — pelo nome. Selecionamos rações e acessórios com carinho, e a conversa continua
+        sendo nossa melhor ferramenta.
+      </p>
+
+      <button type="button" class="btn block" (click)="fecharHistoria()">Entendi</button>
+    </div>
+  </div>
+}

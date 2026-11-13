@@ -135,3 +135,4 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
 .tbl .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .tbl .actions { display: flex; gap: 8px; justify-content: flex-end; }
 .empty-row { text-align: center; color: var(--muted); padding: 40px 16px !important; }
+

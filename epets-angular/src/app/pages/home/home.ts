@@ -1,14 +1,16 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductCard } from '../../components/product-card/product-card';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/products';
+import { WHATSAPP_URL } from '../../config/contato';
 
 @Component({
   selector: 'app-home',
   imports: [RouterLink, ProductCard],
   templateUrl: './home.html',
   styleUrl: './home.css',
+  host: { '(document:keydown.escape)': 'fecharHistoria()' },
 })
 export class Home {
   private readonly products = inject(ProductService);
@@ -34,4 +36,17 @@ export class Home {
     { nome: 'Purina', img: 'purina.png' },
     { nome: 'Pedigree', img: 'pedigree.png' },
   ];
+
+  protected readonly whatsapp = WHATSAPP_URL;
+
+  // janela "Nossa história"
+  protected readonly historiaAberta = signal(false);
+
+  protected abrirHistoria() {
+    this.historiaAberta.set(true);
+  }
+
+  protected fecharHistoria() {
+    this.historiaAberta.set(false);
+  }
 }

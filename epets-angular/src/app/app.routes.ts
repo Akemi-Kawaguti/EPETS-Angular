@@ -1,6 +1,23 @@
 import { Routes } from '@angular/router';
+import { adminGuard, visitanteGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // ---------- entrar / criar conta (tela própria, sem header e footer)
+  {
+    path: 'entrar',
+    canActivate: [visitanteGuard],
+    data: { modo: 'entrar' },
+    title: 'Entrar • E’PETS',
+    loadComponent: () => import('./pages/auth/auth').then((m) => m.AuthPage),
+  },
+  {
+    path: 'cadastro',
+    canActivate: [visitanteGuard],
+    data: { modo: 'cadastro' },
+    title: 'Criar conta • E’PETS',
+    loadComponent: () => import('./pages/auth/auth').then((m) => m.AuthPage),
+  },
+
   // ---------- loja (header + footer)
   {
     path: '',
@@ -18,6 +35,7 @@ export const routes: Routes = [
   // ---------- painel admin
   {
     path: 'admin',
+    canActivate: [adminGuard],
     loadComponent: () => import('./layout/admin-layout/admin-layout').then((m) => m.AdminLayout),
     children: [
       { path: '', pathMatch: 'full', title: 'Visão geral • E’PETS Admin', loadComponent: () => import('./admin/dashboard/dashboard').then((m) => m.Dashboard) },

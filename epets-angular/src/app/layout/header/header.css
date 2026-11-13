@@ -15,28 +15,33 @@ header.site { background: #fff; border-bottom: 1px solid var(--border); position
 
 .hact { display: flex; gap: 22px; align-items: center; font-size: 13px; }
 .hact a { display: inline-flex; align-items: center; gap: 8px; }
-.hact .admin {
-  border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-weight: 600;
-}
-.hact .admin:hover { border-color: var(--terra); color: var(--terra); }
 .hact .chat:hover { color: var(--terra); }
 .bagbtn { font-weight: 600; font-size: 14px; }
 .bagbtn:hover { color: var(--terra); }
 
+/* ---------- bonequinho de perfil ---------- */
+.perfil { position: relative; }
+.perfil-btn {
+  width: 42px; height: 42px; border-radius: 50%; display: inline-grid !important; place-items: center;
+  border: 1px solid var(--border); background: #fff; color: var(--ink);
+  transition: border-color .15s, color .15s, background .15s;
+}
+.perfil-btn:hover { border-color: var(--terra); color: var(--terra); }
+.perfil-btn.logado { background: var(--terra-l); border-color: var(--terra); color: var(--terra); }
+
+.perfil-menu {
+  position: absolute; right: 0; top: 52px; z-index: 60; min-width: 230px;
+  background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 6px;
+  box-shadow: 0 18px 40px rgba(53, 44, 40, .14);
+}
+.perfil-menu .quem { padding: 10px 12px 12px; border-bottom: 1px solid var(--border); margin-bottom: 6px; }
+.perfil-menu .quem strong { display: block; font-size: 14px; }
+.perfil-menu .quem small { color: var(--muted); font-size: 12px; word-break: break-all; }
+.perfil-menu a, .perfil-menu button {
+  display: flex; width: 100%; padding: 10px 12px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; text-align: left;
+}
+.perfil-menu a:hover, .perfil-menu button:hover { background: var(--cream); color: var(--terra); }
+
 nav.cats { border-top: 1px solid var(--border); }
 nav.cats .wrap { display: flex; justify-content: space-between; align-items: center; height: 48px; }
-nav.cats a { font-size: 13px; padding: 6px 2px; border-bottom: 2px solid transparent; white-space: nowrap; }
-nav.cats a.on { font-weight: 600; border-color: var(--terra); }
-nav.cats a:hover { color: var(--terra); }
-
-@media (max-width: 1000px) {
-  nav.cats .wrap { overflow-x: auto; gap: 22px; justify-content: flex-start; }
-  .hact .chat { display: none; }
-}
-@media (max-width: 640px) {
-  .hrow { flex-wrap: wrap; height: auto; padding: 12px 0; gap: 12px; }
-  .search { order: 3; flex-basis: 100%; }
-  .logo img { height: 64px; }
-  .hact { margin-left: auto; }
-  .hact .admin { display: none; }
-}
